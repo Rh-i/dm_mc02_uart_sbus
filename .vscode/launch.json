@@ -1,0 +1,40 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "cwd": "${workspaceFolder}",
+            "type": "cortex-debug",
+            "request": "launch",
+            "name": "cmsis-dap-debug",
+            "servertype": "openocd",
+            // 工程名来自 CMakeLists.txt 的 CMAKE_PROJECT_NAME，不是文件夹名
+            "executable": "build/Debug/dm_mc02_uart_sbus.elf",
+            "runToEntryPoint": "main",
+            "configFiles": [
+                "interface/cmsis-dap.cfg",
+                "target/stm32h7x.cfg"
+            ],
+            "liveWatch": {
+                "enabled": true,
+                "samplesPerSecond": 20
+            },
+            "svdFile": "Flash/STM32H723.svd"
+        },
+        {
+            "cwd": "${workspaceFolder}",
+            "type": "cortex-debug",
+            "request": "launch",
+            "name": "jlink-debug",
+            "servertype": "jlink",
+            "interface": "swd",
+            "executable": "build/Debug/dm_mc02_uart_sbus.elf",
+            "runToEntryPoint": "main",
+            "device": "STM32H723VG",
+            "liveWatch": {
+                "enabled": true,
+                "samplesPerSecond": 20
+            },
+            "svdFile": "Flash/STM32H723.svd"
+        }
+    ]
+}

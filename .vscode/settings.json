@@ -1,0 +1,55 @@
+{
+    // CMake 预设把编译数据库放在 build/Debug/，clangd 默认只找 build/，需显式指定
+    // （先执行一次 cmake --preset Debug）。这里是相对路径，相对 VS Code 的 ${workspaceFolder}。
+    // 用命令行参数指定后，库代码也用宿主工程的编译数据库，跳转与补全才对得上。
+    "clangd.arguments": [
+        "--compile-commands-dir=build/Debug",
+        "--query-driver=/home/rh/arm-gnu-toolchain-15.2.rel1-x86_64-arm-none-eabi/bin/arm-none-eabi-*"
+    ],
+    // 调试时变量按自然类型显示（寄存器位域不会显示成十进制大数）
+    "cortex-debug.variableUseNaturalFormat": true,
+    "cmake.useCMakePresets": "always",
+    // 状态栏按钮，对应 tasks.json 里的任务 label
+    "VsCodeTaskButtons.showCounter": false,
+    "VsCodeTaskButtons.tasks": [
+        {
+            "label": "[🔨 编译]",
+            "task": "Build",
+            "tooltip": "编译项目"
+        },
+        {
+            "label": "[🧹 重新编译]",
+            "task": "Clean_Rebuild",
+            "tooltip": "先清理再重新编译"
+        },
+        {
+            "label": "[🗑️ 清理]",
+            "task": "Clean",
+            "tooltip": "仅清理构建产物"
+        },
+        {
+            "label": "[⚡ DAP烧录]",
+            "task": "OpenOCD_flash",
+            "tooltip": "OpenOCD + DAPLink 烧录"
+        },
+        {
+            "label": "[🔌 JLink烧录]",
+            "task": "JLink_flash",
+            "tooltip": "经 OpenOCD 的 jlink 适配器烧录"
+        }
+    ],
+    // 源码用两种注释分区：`// ---------------- 标题 ----------------`（.cpp 多用）和
+    // `/* ==================== 标题 ==================== */`（.hpp 多用），一条正则同时认。
+    // `{16,}` 而不是 `{16}`：库里写的是 20 个等号，定长会把多余的 `====` 吃进标题。
+    // 说明见 docs/编辑器配置.md
+    "outlinePlus.regionBoundaryPatternByLanguageId": {
+        "c": {
+            "startRegex": "^\\s*/\\* ={20} (.+) ={20} \\*/\\s*$",
+            "endRegex": "^\\s*/\\* ={20} \\*/\\s*$"
+        },
+        "cpp": {
+            "startRegex": "^\\s*/\\* ={20} (.+) ={20} \\*/\\s*$",
+            "endRegex": "^\\s*/\\* ={20} \\*/\\s*$"
+        }
+    }
+}
